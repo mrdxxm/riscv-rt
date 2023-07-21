@@ -1,5 +1,5 @@
 [package]
-name = "riscv-rt"
+name = "ch32-riscv-rt"
 version = "0.11.0"
 rust-version = "1.59"
 repository = "https://github.com/rust-embedded/riscv-rt"
@@ -12,6 +12,12 @@ edition = "2018"
 
 [features]
 s-mode = []
+# qingke-v2a = []
+# qingke-v3a = []
+# qingke-v4a = []
+qingke-v4b = []
+# qingke-v4c = []
+# qingke-v4f = []
 
 [dependencies]
 r0 = "1.0.0"

@@ -2,9 +2,8 @@
 #![no_main]
 
 extern crate panic_halt;
-extern crate riscv_rt;
 
-use riscv_rt::entry;
+use ch32_riscv_rt::entry;
 
 #[entry]
 fn main() -> ! {

@@ -3,11 +3,10 @@
 
 extern crate panic_halt;
 extern crate riscv;
-extern crate riscv_rt;
 
+use ch32_riscv_rt::entry;
 use riscv::asm::wfi;
 use riscv::register::{mie, mip};
-use riscv_rt::entry;
 
 #[export_name = "_mp_hook"]
 #[rustfmt::skip]
