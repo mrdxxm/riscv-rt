@@ -357,6 +357,7 @@
 
 // NOTE: Adapted from cortex-m/src/lib.rs
 #![no_std]
+#![feature(linkage)]
 #![deny(missing_docs)]
 
 #[cfg(riscv)]

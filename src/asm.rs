@@ -23,10 +23,11 @@ macro_rules! cfg_global_asm {
 // the stack pointer, the frame pointer (needed for closures to work in start_rust)
 // and the global pointer. Then it calls _start_rust.
 cfg_global_asm!(
-    ".section .init, \"ax\"
+    r#"
+    .section .init, "ax"
     .global _start
 
-_start:",
+_start:"#,
     #[cfg(riscv32)]
     "lui ra, %hi(_abs_start)
      jr %lo(_abs_start)(ra)",
@@ -136,10 +137,73 @@ _abs_start:
 macro_rules! trap_handler {
     ($STORE:ident, $LOAD:ident, $BYTES:literal, $TRAP_SIZE:literal, [$(($REG:ident, $LOCATION:literal)),*]) => {
         global_asm!(
-        "
-            .section .trap, \"ax\"
-            .global default_start_trap
-        default_start_trap:",
+        r#"
+            .section .trap, "ax"
+            .weak default_start_trap
+            .weak _start_trap1
+            .weak _start_trap3
+            .weak _start_trap2
+            .weak _start_trap4
+            .weak _start_trap5
+            .weak _start_trap6
+            .weak _start_trap7
+            .weak _start_trap8
+            .weak _start_trap9
+            .weak _start_trap10
+            .weak _start_trap11
+            .weak _start_trap12
+            .weak _start_trap13
+            .weak _start_trap14
+            .weak _start_trap15
+            .weak _start_trap16
+            .weak _start_trap17
+            .weak _start_trap18
+            .weak _start_trap19
+            .weak _start_trap20
+            .weak _start_trap21
+            .weak _start_trap22
+            .weak _start_trap23
+            .weak _start_trap24
+            .weak _start_trap25
+            .weak _start_trap26
+            .weak _start_trap27
+            .weak _start_trap28
+            .weak _start_trap29
+            .weak _start_trap30
+            .weak _start_trap31
+
+            _start_trap1:
+            _start_trap2:
+            _start_trap3:
+            _start_trap4:
+            _start_trap5:
+            _start_trap6:
+            _start_trap7:
+            _start_trap8:
+            _start_trap9:
+            _start_trap10:
+            _start_trap11:
+            _start_trap12:
+            _start_trap13:
+            _start_trap14:
+            _start_trap15:
+            _start_trap16:
+            _start_trap17:
+            _start_trap18:
+            _start_trap19:
+            _start_trap20:
+            _start_trap21:
+            _start_trap22:
+            _start_trap23:
+            _start_trap24:
+            _start_trap25:
+            _start_trap26:
+            _start_trap27:
+            _start_trap28:
+            _start_trap29:
+            _start_trap30:
+            _start_trap31:
+        default_start_trap:"#,
             // save space for trap handler in stack
             concat!("addi sp, sp, -", stringify!($TRAP_SIZE * $BYTES)),
             // save registers in the desired order
@@ -183,4 +247,56 @@ global_asm!(
      .globl abort
 abort:
     j abort"
+);
+global_asm!(
+    r#"
+/*
+    Interrupt vector table (_vector_table)
+*/
+
+.section .trap, "ax"
+.weak _vector_table
+.type _vector_table, @function
+
+.option push
+.balign 0x100
+.option norelax
+.option norvc
+
+_vector_table:
+    j default_start_trap
+    j _start_trap1
+    j _start_trap2
+    j _start_trap3
+    j _start_trap4
+    j _start_trap5
+    j _start_trap6
+    j _start_trap7
+    j _start_trap8
+    j _start_trap9
+    j _start_trap10
+    j _start_trap11
+    j _start_trap12
+    j _start_trap13
+    j _start_trap14
+    j _start_trap15
+    j _start_trap16
+    j _start_trap17
+    j _start_trap18
+    j _start_trap19
+    j _start_trap20
+    j _start_trap21
+    j _start_trap22
+    j _start_trap23
+    j _start_trap24
+    j _start_trap25
+    j _start_trap26
+    j _start_trap27
+    j _start_trap28
+    j _start_trap29
+    j _start_trap30
+    j _start_trap31
+
+.option pop
+"#
 );
