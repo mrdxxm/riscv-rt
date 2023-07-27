@@ -359,6 +359,7 @@
 #![no_std]
 #![feature(linkage)]
 #![deny(missing_docs)]
+use core::arch::asm;
 
 #[cfg(riscv)]
 mod asm;
@@ -596,6 +597,13 @@ pub unsafe extern "Rust" fn default_setup_interrupts() {
     extern "C" {
         fn _start_trap();
     }
+    
+    asm!("// Enable nested
+	li t0, 0x2
+	csrw 0x804, t0
 
+    // Enable interrupt
+   	li t0, 0x1800
+   	csrs mstatus, t0");
     xtvec::write(_start_trap as usize, xTrapMode::Direct);
 }

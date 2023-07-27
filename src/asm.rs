@@ -1,6 +1,7 @@
 use core::arch::global_asm;
 
 /// Parse cfg attributes inside a global_asm call.
+#[macro_export]
 macro_rules! cfg_global_asm {
     {@inner, [$($x:tt)*], } => {
         global_asm!{$($x)*}
@@ -111,8 +112,11 @@ _abs_start:
     bnez t1, 1b
 2:  ",
     "sub sp, sp, t0
-    
-    // Set frame pointer 
+    li t0, 0x1f
+    csrw 0xbc0, t0
+
+    ",
+    "// Set frame pointer 
     add s0, sp, zero
 
     jal zero, _start_rust
